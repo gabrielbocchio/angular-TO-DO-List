@@ -1,0 +1,51 @@
+<div class="container">
+  <form (ngSubmit)="add()" class="form-container mt-4">
+    <h2 class="mb-4">To-do List</h2>
+    <input
+      type="text"
+      [(ngModel)]="newTaskName"
+      name="word"
+      class="form-control mb-2"
+      placeholder="Add Task"
+    />
+    <p *ngIf="validation" class="text-danger">{{ validation }}</p>
+    <button type="submit" class="btn btn-primary">+</button>
+  </form>
+  <ul class="task-list mt-4" cdkDropList (cdkDropListDropped)="onDrop($event)">
+    <li
+      *ngFor="let t of task; let i = index"
+      class="list-group-item d-flex justify-content-between align-items-center mb-2"
+      cdkDrag
+      (cdkDragStarted)="onDragStarted(i)"
+    >
+      <input type="checkbox" class="custom-checkbox" [(ngModel)]="t.check"/>
+      <span [ngClass]="{ 'completed-task': t.check }">{{ t.name }}</span>
+      <div>
+        <button class="btn btn-success edit mr-2" (click)="edit(i)">📝</button>
+        <button class="btn btn-danger" (click)="remove(i)">❌</button>
+      </div>
+    </li>
+  </ul>
+  <div class="modal" id="editModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">Edit Task</h3>
+        </div>
+        <div class="modal-body">
+          <input
+            type="text"
+            [(ngModel)]="editedTaskName"
+            class="form-control"
+          />
+        </div>
+        <div class="modal-footer">
+          <button (click)="saveEdit()" class="btn btn-success">✔</button>
+          <button (click)="cancelEdit()" class="btn btn-secondary">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
